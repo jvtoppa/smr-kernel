@@ -2,41 +2,57 @@
 #include <vector>
 #include <fstream>
 #include <cstdint>
+#include <algorithm>
 #include "libsais.h"
 
+void K (std::vector<uint8_t>&,std::vector<uint8_t>&);
+
+
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <filename>" << std::endl;
-        return 1;
-    }
+	if (argc < 2) {
+		std::cerr << "Usage: " << argv[0] << " <filename>" << std::endl;
+		return 1;
+	}
 
-    std::ifstream file(argv[1]);
-    if (!file) {
-        std::cerr << "Error: Could not open file." << std::endl;
-        return 1;
-    }
+	std::ifstream file(argv[1], std::ios::binary | std::ios::ate);
+	std::streamsize n = file.tellg();
+	file.seekg(0, std::ios::beg);
+	std::vector<uint8_t> T(n);
+	std::vector<uint8_t> ker;
+	
+	file.read(reinterpret_cast<char*>(T.data()), n);
 
-    std::streamsize size = file.tellg();
-    file.seekg(0, std::ios::beg);
+	uint32_t depth = 1;
 
-    std::vector<uint8_t> buffer(size);
-    if (!file.read(reinterpret_cast<char*>(buffer.data()), size)) {
-        std::cerr << "Error: Could not read file." << std::endl;
-        return 1;
-    }
+	K(T,ker);
 
-    std::vector<int32_t> SA(size);
+	return 0;
+}
 
-    std::cout << "Building Suffix Array for " << size << " bytes..." << std::endl;
 
-    int32_t result = libsais(buffer.data(), SA.data(), (int32_t)size, 0, nullptr);
 
-    if (result >= 0) {
-        std::cout << "Success! Suffix Array constructed." << std::endl;
-    } else {
-        std::cerr << "Error: Suffix Array construction failed." << std::endl;
-        return 1;
-    }
+void K(std::vector<uint8_t>& T, std::vector<uint8_t>& ker){
+	
+	uint32_t n = T.size();
 
-    return 0;
+	std::vector<int32_t> SA(n);
+	std::vector<int32_t> LCP(n);
+	
+	{
+	std::vector<int32_t> PLCP(n);
+
+	std::cout << "Building SA and LCP for " << n << " bytes..." << std::endl;
+
+	libsais(T.data(), SA.data(), n, 0, nullptr);
+
+	libsais_plcp(T.data(), SA.data(), PLCP.data(), n);
+
+	libsais_lcp(PLCP.data(), SA.data(), LCP.data(), n);
+
+	std::cout << "Success!" << std::endl;
+	}
+
+	std::vector<uint8_t> res;
+	
+
 }
