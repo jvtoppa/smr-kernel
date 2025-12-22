@@ -15,6 +15,35 @@ void rts(
 	std::vector<std::pair<uint32_t, uint32_t>>& R 
 );
 
+
+
+void process(std::string T){
+
+	std::string ker;
+
+	std::cout << "iteration\tkernel length" << std::endl;
+
+	std::cout << "0\t" << T.length() << std::endl;
+	K(T,ker);
+	std::cout << "1\t" << ker.length() << std::endl;
+
+	T = ker;
+	ker.clear();
+
+	uint32_t it = 2;
+
+	while(T.length()>0){
+
+		K(T,ker);
+		std::cout << it << "\t" << ker.length() << std::endl;
+		T = ker;
+		ker.clear();
+		++it;
+
+	}
+
+}
+
 //version reading stdin
 int main() {
 	
@@ -25,14 +54,8 @@ int main() {
 		std::istreambuf_iterator<char>()
 	);
 
-	std::string ker;
-	K(T,ker);
+	process(T);
 
-	std::cout << "string and its kernel:" << std::endl;
-	std::cout << T << std::endl;
-	std::cout << ker << std::endl;
-
-	return 0;
 }
 
 //version reading a file
@@ -51,7 +74,7 @@ int main(int argc, char* argv[]) {
 	
 	file.read(reinterpret_cast<char*>(T.data()), n);
 
-	K(T,ker);
+	process(T);
 
 	return 0;
 }
@@ -70,11 +93,11 @@ void K(std::string& T, std::string& ker){
 	
 	{
 	std::vector<int32_t> PLCP(n);
-	std::cout << "Building SA and LCP of T (" << n << " bytes)..." << std::endl;
+	//std::cout << "Building SA and LCP of T (" << n << " bytes)..." << std::endl;
 	libsais((uint8_t*)T.data(), SA.data(), n, 0, nullptr);
 	libsais_plcp((uint8_t*)T.data(), SA.data(), PLCP.data(), n);
 	libsais_lcp(PLCP.data(), SA.data(), LCP.data(), n);
-	std::cout << "Success!" << std::endl;
+	//std::cout << "Success!" << std::endl;
 	}
 
 	// compute SMR of T
@@ -82,11 +105,11 @@ void K(std::string& T, std::string& ker){
 	std::vector<std::pair<uint32_t, uint32_t>> R;
 
 
-	std::cout << "Computing roots of SMR of T..." << std::endl;
+	//std::cout << "Computing roots of SMR of T..." << std::endl;
 	rts(T,SA,LCP,R);
-	std::cout << "Success! found " << R.size() << " roots." << std::endl;
+	//std::cout << "Success! found " << R.size() << " roots." << std::endl;
 
-	for(auto p:R) std::cout << p.first << "," << p.second << std::endl;
+	//for(auto p:R) std::cout << p.first << "," << p.second << std::endl;
 
 	std::string res;
 
