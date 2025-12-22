@@ -5,8 +5,8 @@ all: main
 debug: OPTIONS=-O0 -g
 debug: all
 
-main: src/main.cpp 
-	g++ ${OPTIONS} -I libsais/include/ src/main.cpp -o smr
+main: src/main.cpp
+	g++ ${OPTIONS} -I libsais/include/ src/main.cpp libsais/src/libsais.c  -o build/smr
 
-clean: 
-	rm -rf build/
+clean:
+	rm -rf ./build/
