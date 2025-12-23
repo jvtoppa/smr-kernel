@@ -22,6 +22,24 @@ void merge(
 );
 
 
+void print_depth(std::string T){
+
+	std::string ker;
+	uint32_t it = 0;
+
+	while(T.length()>0){
+
+		K(T,ker);
+		T = ker;
+		ker.clear();
+		++it;
+
+	}
+
+	std::cout << "recursion depth: " << it << std::endl;
+
+}
+
 void process(std::string T){
 
 	std::string ker;
@@ -59,7 +77,8 @@ int main() {
 		std::istreambuf_iterator<char>()
 	);
 
-	process(T);
+	//process(T);
+	print_depth(T);
 
 }
 
