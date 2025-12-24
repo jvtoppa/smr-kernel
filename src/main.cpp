@@ -19,6 +19,11 @@ std::string merge(
 	const std::vector<std::pair<uint32_t, uint32_t>>& p
 );
 
+std::string merge_simple(
+	const std::string& T,
+	const std::vector<std::pair<uint32_t, uint32_t>>& p
+);
+
 
 int recursion_depth(std::string T){
 
@@ -56,8 +61,43 @@ void process(std::string T){
 
 }
 
-//reads from stdin
+
+void brute_force_max_ratio(){
+
+	std::cout << "n\tratio\tdifference\tstring\tkernel\n";
+
+	std::string max_str;
+	std::string max_ker;
+
+	for(int n=1;n<32;++n){
+
+		int max_k=0;
+		std::string s(n,'a');
+		for(uint32_t i=0;i < (uint32_t(1)<<n) ;++i){
+			uint32_t x=i;
+			for(int k = 0;k < n; ++k){
+				s[k] = x%2 ? 'a' : 'b';
+				x = x>>1;
+			}
+			std::string k = K(s);
+
+			if(k.length() > max_k){
+				max_str = s;
+				max_ker = k;
+				max_k = k.length();
+			}
+
+		}
+
+		std::cout << n << "\t" << double(max_k)/n << "\t" << (n-max_k) << "\t" << max_str << "\t" << max_ker << std::endl;
+	
+	}
+
+}
+
 int main() {
+
+	//brute_force_max_ratio();exit(0);
 
 	std::string T;
 
@@ -102,6 +142,23 @@ std::string K(std::string& T){
 	// step 3 extract characters avoiding overlaps
 
 	return merge(T, R); 
+
+}
+
+std::string merge_simple(
+	const std::string& T,
+	const std::vector<std::pair<uint32_t, uint32_t>>& p
+	) {
+
+	std::string res;
+	uint32_t i=0; //last char we appended is T[i-1]
+
+	for(auto x : p){
+		for(int j=std::max(x.first,i); j<=x.second;++j ) res += T[j];		
+		i = x.second+1;
+	}
+
+	return res;
 
 }
 

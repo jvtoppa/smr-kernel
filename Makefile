@@ -1,4 +1,4 @@
-OPTIONS=-O3 --std=c++17
+OPTIONS=-O3 -ffast-math --std=c++17
 
 all: main gen_test kernelize
 

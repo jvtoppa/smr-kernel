@@ -19,6 +19,10 @@ std::string merge(
 	const std::vector<std::pair<uint32_t, uint32_t>>& p
 );
 
+std::string merge_simple(
+	const std::string& T,
+	const std::vector<std::pair<uint32_t, uint32_t>>& p
+);
 
 void process(std::string T, uint32_t k){
 
@@ -89,9 +93,27 @@ std::string K(std::string& T){
 
 	// step 3 extract characters avoiding overlaps
 
-	return merge(T, R); 
+	return merge_simple(T, R); 
 
 }
+
+std::string merge_simple(
+	const std::string& T,
+	const std::vector<std::pair<uint32_t, uint32_t>>& p
+	) {
+
+	std::string res;
+	uint32_t i=0; //last char we appended is T[i-1]
+
+	for(auto x : p){
+		for(int j=std::max(x.first,i); j<=x.second;++j ) res += T[j];		
+		i = x.second+1;
+	}
+
+	return res;
+
+}
+
 
 //assumes character 0 does not appear in T
 std::string merge(
