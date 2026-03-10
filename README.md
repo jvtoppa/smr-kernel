@@ -1,8 +1,8 @@
 # Super Maximal Repeats Kernel
 
-The algorithm we present is a strategy for finding a good reference for Relative Lempel Ziv by leveraging Super Maximal Repeats. Let S[1,n] in Sigma^n be a string. 
+The algorithm we present is a strategy for finding a good reference for Relative Lempel Ziv by leveraging Super Maximal Repeats. Let $$S[1,n] in \Sigma^n$$ be a string. 
 
-A supermaximal repeat (SMR) is a repeat that is not contained inside any other repeat. The notions of repeats and supermaximal repeats can naturally be extended to string sets. One way of doing this is to convert the set {S1, ... , Sk} to the string S' = S1 #1 S2 #2 ... #(k-1) Sk, where #1, ... , #k are all distinct and not part of the original alphabet.
+A supermaximal repeat (SMR) is a repeat that is not contained inside any other repeat. The notions of repeats and supermaximal repeats can naturally be extended to string sets. One way of doing this is to convert the set $${S1, ... , Sk}$$ to the string $$S' = S1 #1 S2 #2 ... #(k-1) Sk$$, where $$#1, ... , #k$$ are all distinct and not part of the original alphabet.
 However, to construct a reference, we can define the following function:
 
 We define k(S) for a string S as the following function: 
@@ -10,7 +10,7 @@ We define k(S) for a string S as the following function:
 1. We define the set SMR' as all the Supermaximal Repeats of S
 2. We join (concatenate) each element of SMR', while making sure that no suffix of SMR'[k-1] is a prefix of SMR'[k] for any k in the interval 0 <= k <= len(SMR'). For periodic strings, we write only the primitive root of a substring i.e., pr(xyxyxy) = xy
 
-As such, we can make k(k(S), k(k(...(k(S))..)) => k^i(S) = eps, which corresponds to the i-eth recursion of the kernelization process.
+As such, we can make $$k(k(S), k(k(...(k(S))..)) => k^i(S) = eps$$, which corresponds to the i-eth recursion of the kernelization process.
 
 ## Bit-sizes
 
