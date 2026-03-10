@@ -1,4 +1,4 @@
-#Super Maximal Repeats Kernel
+# Super Maximal Repeats Kernel
 
 The algorithm we present is a strategy for finding a good reference for Relative Lempel Ziv by leveraging Super Maximal Repeats. Let S[1,n] in Sigma^n be a string. 
 
@@ -12,7 +12,7 @@ We define k(S) for a string S as the following function:
 
 As such, we can make k(k(S), k(k(...(k(S))..)) => k^i(S) = eps, which corresponds to the i-eth recursion of the kernelization process.
 
-##Bit-sizes
+## Bit-sizes
 
 We use the LZ77/RLZ variant where each phrase is the shortest substring of length l that does not appear before. Each phrase can therefore be encoded as a triple (i,l-1,c) where i is the pointer pointing to the source of the phrase, l-1 is the number of copied characters and c is the extra character. In practice, i and c are encoded with no compression, while l is encoded with Elias-Fano.
 
@@ -26,6 +26,6 @@ $$
 
 The algorithm runs k(S) until BITSIZE[RLZ(k^i+1(S))] > BITSIZE[RLZ(k^i(S))]. For now, we do not build the Relative Lempel Ziv data struture to memory, but we plan to.  
 
-##Running the code
+## Running the code
 
 Clone the repository with git clone --recursive. To build the code, run make. Then, save the file you want to encode in data/ and run ./build/smr < data/file.txt.
