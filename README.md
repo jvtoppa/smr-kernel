@@ -18,7 +18,7 @@ $$
 
 As such, it is easy to notice that $k(k(S), k(k(...(k(S))..)) => k^m(S) = \epsilon$, which corresponds to the m-th (last) recursion step of the kernelization process.
 
-## Bit-sizes
+## Algorithm
 
 We use the LZ77 ($Z$) /RLZ ($\bar{Z}$) variant where each phrase is the shortest substring of length $\ell$ that does not appear before. Each phrase can therefore be encoded as a triple $(i,\ell-1,c)$ where $i$ is the pointer pointing to the source of the phrase, $\ell-1$ is the number of copied characters and c is the extra character. In practice, i and c are encoded with no compression, while $\ell$ is encoded with Elias-Fano.
 
@@ -32,7 +32,9 @@ $$
 
 ![english.50mb (first 100k chars)](imgs/xml_merged.png)
 
-We have noticed experimentally (Figure 1) that there exists a global minimum for the size of RLZ with this strategy. As such, we can simply do a recursion call until $$B_\bar{Z}[\bar{Z}(k^{i+1}(S))] > B_\bar{Z}[RLZ[\bar{Z}(k^i(S))]$$. For now, we do not build the Relative Lempel Ziv data struture to memory, but we plan to.  
+We have noticed experimentally (Figure 1) that there exists a global minimum for the size of RLZ with this strategy - as such, we can simply optimize our reference with the bitsize of RLZ + reference in mind. For that, we do a recursion call until $$B_\bar{Z}[\bar{Z}(k^{i+1}(S))] > B_\bar{Z}[RLZ[\bar{Z}(k^i(S))]$$ and simply use $\bar{Z}(k^i(S))$ as the chosen reference. 
+
+For now, we do not build the Relative Lempel Ziv data struture to memory, but we plan to.  
 
 ## Running the code
 
